@@ -111,7 +111,7 @@ class MainViewController: KViewController,UITableViewDelegate,UITableViewDataSou
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (self.sectionArray[section] as! SectionModel).dataArray.count == 0 ? 0 : (self.sectionArray[section] as! SectionModel).dataArray.count;
+        return (self.sectionArray[section] as! SectionModel).isExpand == false ? 0 : (self.sectionArray[section] as! SectionModel).dataArray.count;
     }
     
     
@@ -123,7 +123,10 @@ class MainViewController: KViewController,UITableViewDelegate,UITableViewDataSou
         
         let header = talbeView.dequeueReusableHeaderFooterView(withIdentifier: "SectionView") as! KSectionHeaderView
         let model = self.sectionArray[section] as! SectionModel
-        header.titleLabel.text = model.title
+        header.setModel(model: model)
+        header.block = { () -> () in
+            talbeView.reloadSections([section], with: UITableViewRowAnimation.fade)
+        }
         
         return header;
     }
